@@ -24,6 +24,7 @@ instance Show Prop where
         Imp p q -> "(" ++ show p ++ " -> " ++ show q ++ ")"
         Equiv p q -> "(" ++ show p ++ " <-> " ++ show q ++ ")"
 
+-- Elimina las equivalencias de una proposicion
 elimEquiv :: Prop -> Prop
 elimEquiv phi = case phi of
     Neg p -> Neg (elimEquiv p)
@@ -35,6 +36,7 @@ elimEquiv phi = case phi of
               q' = elimEquiv q
     _ -> phi
 
+-- Elimina las implicaciones de una proposicion
 elimImp :: Prop -> Prop
 elimImp phi = case phi of
     Neg p -> Neg (elimImp p)
@@ -62,6 +64,7 @@ meteNeg phi = case phi of
     Conj p q -> Conj (meteNeg p) (meteNeg q)
     Disy p q -> Disy (meteNeg p) (meteNeg q)
 
+-- Regresa la forma normal negativa de una proposicion
 fnn :: Prop -> Prop
 fnn = meteNeg.elimImp.elimEquiv
 
@@ -82,5 +85,6 @@ dist phi = case phi of
         where p' = dist p
               q' = dist q
 
+-- Regresa la forma normal conjuntiva de una proposicion
 fnc :: Prop -> Prop
 fnc = dist.fnn
