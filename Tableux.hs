@@ -1,13 +1,13 @@
-module Tableaux where
+module Tableux where
 
 import Syntax
 
-data Tableaux = Empty
-             | Uno Prop Tableaux
-             | Dos Tableaux Tableaux
+data Tableux = Empty
+             | Uno Prop Tableux
+             | Dos Tableux Tableux
 
 -- Suponemos que las proposiones ya están en FNN
-expand :: Tableaux -> Tableaux
+expand :: Tableux -> Tableux
 expand tab = case tab of
     Empty -> Empty
     Uno phi t -> case phi of
@@ -16,7 +16,7 @@ expand tab = case tab of
         _ -> Uno phi (expand t)
     Dos t1 t2 -> Dos (expand t1) (expand t2)
 
-trans :: Prop -> Tableaux
+trans :: Prop -> Tableux
 trans phi = expand (Uno phi Empty)
 
 -- DFS
@@ -24,7 +24,7 @@ trans phi = expand (Uno phi Empty)
 -- nos dice si el tableaux tiene un camino
 -- que no contenga a ninguna de las negaciones
 -- las variables en la lista dada
-satisf_aux :: Tableaux -> [VarP] -> Bool
+satisf_aux :: Tableux -> [VarP] -> Bool
 satisf_aux tab l = case tab of
     Empty -> True
     Uno phi t -> case phi of
